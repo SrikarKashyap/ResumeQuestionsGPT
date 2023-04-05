@@ -17,10 +17,12 @@ def index():
 def questions():
     # read file and get the query
     file = flask.request.files['resume']
+    additional_info = flask.request.form['additional-text']
     pdfReader = PyPDF2.PdfReader(file)
     resume = ""
     for i in range(len(pdfReader.pages)):
         resume += pdfReader.pages[i].extract_text()
+    resume += "------------------\n"+additional_info+"\n------------------\n"
     content = """{resume}
     --------------------------
 
@@ -51,8 +53,6 @@ Answer MUST be in JSON format with the following structure:
     with open('questions.json', 'w') as f:
         f.write(questions)
     answer = json.loads(questions)
-    # questions = question.split('\n')
-    # return str(answer)
     return flask.render_template('questions.html', questions=dict(answer)['questions'])
 
 
