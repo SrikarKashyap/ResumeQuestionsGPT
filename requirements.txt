@@ -1,0 +1,9 @@
+flask
+numpy
+matplotlib
+scipy
+scikit-learn
+tenacity
+plotly
+openai
+PyPDF2
