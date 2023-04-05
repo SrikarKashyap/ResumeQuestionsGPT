@@ -1,4 +1,4 @@
-<<!DOCTYPE html>
+<!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -11,18 +11,32 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <!-- import bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <style>
+            form, input  {
+                margin: 0 auto;
+
+            }
+        </style>
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        
-        <script src="" async defer></script>
+        <div class="jumbotron text-center">
 
-        <h1>Resume --> Interview Questions using GPT3.5</h1>
+        <h2>Resume => Interview Questions using ChatGPT (GPT3.5)</h2>
         <p>Enter your resume below and click the button to generate technical interview questions based on your resume!</p>
         <form action="questions" method="post" enctype="multipart/form-data" >
-            <input type ="file" name="resume" id="resume" accept=".pdf,.doc,.docx,.txt,.rtf,.odt"> <br> <br>
-            <input type="submit" value="Generate Questions">
+            <input type ="file" name="resume" id="resume" accept=".pdf"> <br> <br>
+           <!-- boostrap submit button -->
+            <input type="submit" class="btn btn-primary" value="Generate Questions">
+
+        </form>
+        <br>
+        <br>
+        <h5> Authors: Srikar Kashyap Pulipaka & Saradhi Somarouthu </h5>
+        </div>
     </body>
 </html>

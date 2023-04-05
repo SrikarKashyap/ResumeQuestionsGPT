@@ -1,6 +1,7 @@
 flask
 numpy
 matplotlib
+json
 scipy
 scikit-learn
 tenacity

@@ -10,19 +10,40 @@
         <title>Probable Questions</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
         
-        <script src="" async defer></script>
-        <h1>Probable Questions</h1>
-        <p>Based on your resume, ChatGPT (GPT3.5) has generated the following probable questions that you may be asked in an interview.</p>
-
-        {% for question in questions %}
-            <p>{{ question }}</p>
-        {% endfor %}
+        <div class="container">
+            <div class="jumbotron">
+                <h1>Probable Questions</h1>
+                <p>Based on your resume, ChatGPT (GPT3.5) has generated the following probable questions that you may be asked in an interview.</p>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <!-- iterate through questions list and display in table using Jinja -->
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Question</th>
+                                <th>Category</th>
+                                <th>Skills</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for question in questions %}
+                            <tr>
+                                <td>{{ question.question }}</td>
+                                <td>{{ question.category }}</td>
+                                <td>{{ question.skills }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    
+                </div>
+            </div>
     </body>
 </html>
