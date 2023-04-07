@@ -4,11 +4,15 @@ import PyPDF2
 import json
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
+import os
 
 app = flask.Flask(__name__)
 
 openai.api_key = "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"
 
+command = "python -m spacy download en_core_web_lg"
+
+os.system(command)
 
 @app.route('/')
 def index():
