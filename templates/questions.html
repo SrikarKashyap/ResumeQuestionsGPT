@@ -67,16 +67,18 @@
             </div>
             <div class = "row">
                 <div class="col-sm-12">
-                    <h3> Time Taken to Generate Questions</h3>
                     <table class="table table-striped">
+                        <h3> Time Taken to Generate Questions</h3>
                         <thead>
                             <tr>
                                 <th>Category</th>
+                                <th>Time Taken (in seconds)</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for i in durations.keys()  %}
                             <tr>
+                                <td>{{ i }}</td>
                                 <td>{{ durations[i] }}</td>
                         </tbody>
                         {% endfor %}

@@ -5,6 +5,8 @@ import json
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
 import os
+import time
+
 
 app = flask.Flask(__name__)
 
@@ -12,7 +14,8 @@ openai.api_key = "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"
 
 command = "python -m spacy download en_core_web_lg"
 
-os.system(command)
+# os.system(command)
+
 
 @app.route('/')
 def index():
@@ -25,24 +28,29 @@ def anonymize_text(text):
     results = analyzer.analyze(text=text,
                                entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
                                          "DOMAIN_NAME", "IP_ADDRESS"],
-                               language='en')    
-    anonymized_text = anonymizer.anonymize(text=text,analyzer_results=results)
+                               language='en')
+    anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
 
     return anonymized_text.text
 
 
 @app.route('/questions', methods=['POST'])
 def questions():
-    # read file and get the query
+    durations = {}
     file = flask.request.files['resume']
     additional_info = flask.request.form['additional-text']
+    start_pdf = time.time()
     pdfReader = PyPDF2.PdfReader(file)
     resume = ""
     for i in range(len(pdfReader.pages)):
         resume += pdfReader.pages[i].extract_text()
+    end_pdf = time.time()
+    durations['pdf'] = end_pdf - start_pdf
+    start_anon = time.time()
     resume = anonymize_text(resume)
-    # with open('anon-resume.txt', 'w',encoding='utf8') as f:
-    #     f.write(resume)
+    end_anon = time.time()
+    durations['anon'] = end_anon - start_anon
+    start_gpt = time.time()
     resume += "------------------\n"+additional_info+"\n------------------\n"
     content = """{resume}
     --------------------------
@@ -71,10 +79,12 @@ Answer MUST be in JSON format with the following structure:
         ]
     )
     questions = completion['choices'][0]['message']['content']
-    with open('questions.json', 'w') as f:
-        f.write(questions)
+    # with open('questions.json', 'w') as f:
+    #     f.write(questions)
     answer = json.loads(questions)
-    return flask.render_template('questions.html', questions=dict(answer)['questions'])
+    end_gpt = time.time()
+    durations['gpt'] = end_gpt - start_gpt
+    return flask.render_template('questions.html', questions=dict(answer)['questions'], durations=durations)
 
 
 if __name__ == '__main__':
