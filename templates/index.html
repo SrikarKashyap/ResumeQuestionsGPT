@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- load static -->
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -22,29 +23,52 @@
         <link rel="stylesheet" href="">
         <!-- import bootstrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- import jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <style>
             form, input  {
                 margin: 0 auto;
 
             }
+
+            div#loading {
+                width: 35px;
+                height: 35px;
+                display: none;
+                background: url(/static/loader.gif) no-repeat;
+                cursor: wait;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                }
+
         </style>
+        <script type="text/javascript">// <![CDATA[
+            function loading(){
+                $("#loading").show();
+                $("#content").hide();       
+            }
+    // ]]>
+    </script>
+            
     </head>
     <body>
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div class="jumbotron text-center">
+        <div id="loading"></div>
+        <div class="jumbotron text-center" id="content">
 
         <h1>Resume => Interview Questions using ChatGPT</h1>
         <p>Upload your resume below and click the button to generate probable technical interview questions based on your resume!</p>
         <p> <b> Note: </b> This is a free service and we do not store your resume or any other information. </p>
         <p> Prompt Assumptions: Mid-level candidate with 2-3 years of experience. </p>
-        <form action="questions" method="post" enctype="multipart/form-data" >
+        <form action="questions" method="post" enctype="multipart/form-data">
             <input type ="file" name="resume" id="resume" accept=".pdf"> <br>
             Additional Instructions: <input type ="text" name="additional-text" id="additional-text" placeholder="Additional Text (Optional)"> <br> <br>
             <br> <br>
            <!-- boostrap submit button -->
-            <input type="submit" class="btn btn-primary" value="Generate Questions">
+            <input type="submit" class="btn btn-primary" value="Generate Questions" onclick="loading();">
 
         </form>
 
