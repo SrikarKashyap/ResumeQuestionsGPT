@@ -2,8 +2,8 @@ import flask
 import openai
 import PyPDF2
 import json
-from presidio_analyzer import AnalyzerEngine
-from presidio_anonymizer import AnonymizerEngine
+# from presidio_analyzer import AnalyzerEngine
+# from presidio_anonymizer import AnonymizerEngine
 import os
 import time
 
@@ -12,7 +12,7 @@ app = flask.Flask(__name__)
 
 openai.api_key = "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"
 
-command = "python -m spacy download en_core_web_lg"
+# command = "python -m spacy download en_core_web_lg"
 
 # os.system(command)
 
@@ -22,16 +22,16 @@ def index():
     return flask.render_template('index.html')
 
 
-def anonymize_text(text):
-    analyzer = AnalyzerEngine()
-    anonymizer = AnonymizerEngine()
-    results = analyzer.analyze(text=text,
-                               entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
-                                         "DOMAIN_NAME", "IP_ADDRESS"],
-                               language='en')
-    anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
+# def anonymize_text(text):
+#     analyzer = AnalyzerEngine()
+#     anonymizer = AnonymizerEngine()
+#     results = analyzer.analyze(text=text,
+#                                entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
+#                                          "DOMAIN_NAME", "IP_ADDRESS"],
+#                                language='en')
+#     anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
 
-    return anonymized_text.text
+#     return anonymized_text.text
 
 
 @app.route('/questions', methods=['POST'])
@@ -45,11 +45,11 @@ def questions():
     for i in range(len(pdfReader.pages)):
         resume += pdfReader.pages[i].extract_text()
     end_pdf = time.time()
-    durations['pdf'] = end_pdf - start_pdf
-    start_anon = time.time()
-    resume = anonymize_text(resume)
-    end_anon = time.time()
-    durations['anon'] = end_anon - start_anon
+    durations['PDF Parsing'] = round(end_pdf - start_pdf, 3)
+    # start_anon = time.time()
+    # resume = anonymize_text(resume)
+    # end_anon = time.time()
+    # durations['anon'] = end_anon - start_anon
     start_gpt = time.time()
     resume += "------------------\n"+additional_info+"\n------------------\n"
     content = """{resume}
@@ -79,13 +79,16 @@ Answer MUST be in JSON format with the following structure:
         ]
     )
     questions = completion['choices'][0]['message']['content']
-    # with open('questions.json', 'w') as f:
-    #     f.write(questions)
-    answer = json.loads(questions)
+    with open('questions.json', 'w') as f:
+        f.write(questions)
+    try:
+        answer = json.loads(questions)
+    except Exception as e:
+        answer = {"questions": []}
     end_gpt = time.time()
-    durations['gpt'] = end_gpt - start_gpt
+    durations['ChatGPT API Request'] = round(end_gpt - start_gpt, 3)
     return flask.render_template('questions.html', questions=dict(answer)['questions'], durations=durations)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

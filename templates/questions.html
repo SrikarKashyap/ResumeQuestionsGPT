@@ -54,6 +54,13 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- check if length of questions is zero -->
+                            {% if questions|length == 0 %}
+                            <tr>
+                                <td colspan="3">No questions generated. Please try again.</td>
+                            </tr>
+                            <!-- if not, iterate through questions and display in table -->
+                            {% else %}
                             {% for question in questions %}
                             <tr>
                                 <td>{{ question.question }}</td>
@@ -61,6 +68,7 @@
                                 <td>{{ question.skills }}</td>
                             </tr>
                             {% endfor %}
+                            {% endif %}
                         </tbody>
                     
                 </div>
@@ -68,7 +76,7 @@
             <div class = "row">
                 <div class="col-sm-12">
                     <table class="table table-striped">
-                        <h3> Time Taken to Generate Questions</h3>
+                        <h3> Time Taken by Step</h3>
                         <thead>
                             <tr>
                                 <th>Category</th>
