@@ -2,6 +2,8 @@ import flask
 import openai
 import PyPDF2
 import json
+from presidio_analyzer import AnalyzerEngine
+from presidio_anonymizer import AnonymizerEngine
 
 app = flask.Flask(__name__)
 
@@ -13,6 +15,18 @@ def index():
     return flask.render_template('index.html')
 
 
+def anonymize_text(text):
+    analyzer = AnalyzerEngine()
+    anonymizer = AnonymizerEngine()
+    results = analyzer.analyze(text=text,
+                               entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
+                                         "DOMAIN_NAME", "IP_ADDRESS"],
+                               language='en')    
+    anonymized_text = anonymizer.anonymize(text=text,analyzer_results=results)
+
+    return anonymized_text.text
+
+
 @app.route('/questions', methods=['POST'])
 def questions():
     # read file and get the query
@@ -22,6 +36,9 @@ def questions():
     resume = ""
     for i in range(len(pdfReader.pages)):
         resume += pdfReader.pages[i].extract_text()
+    resume = anonymize_text(resume)
+    # with open('anon-resume.txt', 'w',encoding='utf8') as f:
+    #     f.write(resume)
     resume += "------------------\n"+additional_info+"\n------------------\n"
     content = """{resume}
     --------------------------

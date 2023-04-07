@@ -7,3 +7,6 @@ tenacity
 plotly
 openai
 PyPDF2
+spacy
+presidio-analyzer
+presidio-anonymizer
