@@ -65,5 +65,24 @@
                     
                 </div>
             </div>
+            <div class = "row">
+                <div class="col-sm-12">
+                    <h3> Time Taken to Generate Questions</h3>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for i in durations.keys()  %}
+                            <tr>
+                                <td>{{ durations[i] }}</td>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
     </body>
 </html>
