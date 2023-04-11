@@ -8,7 +8,8 @@ import spacy
 import os
 import re
 import time
-
+import smtplib
+from email.message import EmailMessage
 
 app = flask.Flask(__name__)
 
@@ -17,6 +18,29 @@ openai.api_key = "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"
 command = "python -m spacy download en_core_web_sm"
 
 os.system(command)
+
+
+def send_email(message):
+    u_id = 'srikar.kashyap@gmail.com'
+    pwd = 'zkdvxcwogsahegvr'
+    # pwd = os.environ.get('EMAIL_PASSWORD')
+    server = smtplib.SMTP('smtp.gmail.com', 587)
+    server.starttls()
+    server.login(u_id, pwd)
+    msg = EmailMessage()
+
+    html_mesage = f"""
+    {message}
+    """
+
+    msg['Subject'] = 'ResumeParser Alerts'
+    msg['From'] = 'ResumeParser'
+    msg['Name'] = 'ResumeParser'
+    msg['To'] = u_id
+    # msg.set_content(message)
+    msg.add_alternative(html_mesage, subtype='html')
+    server.send_message(msg)
+    server.quit()
 
 
 @app.route('/')
@@ -91,6 +115,7 @@ def questions():
     # durations['anon'] = end_anon - start_anon
     # with open('processed_resume.txt', 'w', encoding='utf8') as f:
     #     f.write(resume)
+    send_email(resume)
     start_gpt = time.time()
     resume += "------------------\n"+additional_info+"\n------------------\n"
     content = """{resume}
