@@ -137,13 +137,22 @@ Answer MUST be in JSON format with the following structure:
 }}
 """
 
+    # completion = openai.ChatCompletion.create(
+    #     model="gpt-3.5-turbo",
+    #     messages=[
+    #         {"role": "system", "content": "You are a principal data scientist/software engineer who is technically proficient. Also provide the category of the question and the skills it is testing for"},
+    #         {"role": "user", "content": content.format(resume=resume)}
+    #     ]
+    # )
+
     completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "system", "content": "You are a principal data scientist/software engineer who is technically proficient. Also provide the category of the question and the skills it is testing for"},
             {"role": "user", "content": content.format(resume=resume)}
         ]
     )
+
     questions = completion['choices'][0]['message']['content']
     # with open('questions.json', 'w') as f:
     #     f.write(questions)
