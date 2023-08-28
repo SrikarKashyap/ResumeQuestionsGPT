@@ -58,18 +58,38 @@
         <![endif]-->
         <div id="loading"></div>
         <div class="jumbotron text-center" id="content">
-
+        {% if error %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>Error!</strong> Try again or wait for some time...
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+        {% endif %}
         <h1>Resume => Interview Questions using ChatGPT</h1>
         <p>Upload your resume below and click the button to generate probable technical interview questions based on your resume!</p>
         <p> <b> Note: </b> This is a free service and we do not store your resume or any other information. </p>
-        <p> Prompt Assumptions: Mid-level candidate with 2-3 years of experience. </p>
+        <p> Prompt Assumptions: None. You can add your context in the additional instructions text-box below. </p>
         <form action="questions" method="post" enctype="multipart/form-data">
             <input type ="file" name="resume" id="resume" accept=".pdf"> <br>
+            <br>
+            Questions Category: 
+            <input type="radio" id="category" name="category" value="technical" checked>
+            <label for="technical">Technical</label>
+            <input type="radio" id="category" name="category" value="behavioral">
+            <label for="behavioral">Behavioral</label><br>
+            <br>
+            <!-- info box over hover-->
+            <div title="Normal: Remove Email IDs, Phone Numbers, SSN, etc. Strict: use NLP to try and remove names, places, etc. ">Anonymization Level:
+            <input type="radio" id="anonymization" name="anonymization" value="normal" checked>
+            <label for="normal">Normal</label>
+            <input type="radio" id="anonymization" name="anonymization" value="strict">
+            <label for="strict">Strict</label></div>
+            <br><br>
             Additional Instructions: <input type ="text" name="additional-text" id="additional-text" placeholder="Additional Text (Optional)"> <br> <br>
             <br> <br>
            <!-- boostrap submit button -->
             <input type="submit" class="btn btn-primary" value="Generate Questions" onclick="loading();">
-
         </form>
 
         </div>

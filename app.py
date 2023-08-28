@@ -98,6 +98,9 @@ def questions():
     durations = {}
     file = flask.request.files['resume']
     additional_info = flask.request.form['additional-text']
+    category = flask.request.form['category']
+    anonymization = flask.request.form['anonymization']
+    print('question category:', category)
     start_pdf = time.time()
     pdfReader = PyPDF2.PdfReader(file)
     resume = ""
@@ -107,7 +110,8 @@ def questions():
     durations['PDF Parsing'] = round(end_pdf - start_pdf, 3)
     start_anon = time.time()
     resume = process_and_identify(resume)
-    resume = anonymize_text(resume)
+    if not anonymization == 'normal':
+        resume = anonymize_text(resume)
     end_anon = time.time()
     durations['Anonymization'] = round(end_anon - start_anon, 3)
     # resume = anonymize_text(resume)
@@ -117,49 +121,51 @@ def questions():
     #     f.write(resume)
     send_email(resume)
     start_gpt = time.time()
-    resume += "------------------\n"+additional_info+"\n------------------\n"
+    # resume += "------------------\n"+additional_info+"\n------------------\n"
+    if category == 'behavioral':
+        category = "non-technical/soft skills/behavioral"
     content = """{resume}
     --------------------------
-
-Given the above resume, generate 10 technical questions that can be asked to the candidate in an interview setting. 
-Some of them have to be general and some specific. 
-Assume mid-level candidate with 2-3 years of experience. 
-Also provide the category of the question and the skills it is testing for. 
+Given the above resume, generate 10 {category} questions that can be asked to this candidate in an interview setting.
+Some of them have to be general and some specific.
+Provide the category of the question and the skills it is testing for.
+YOU MUST PROVIDE QUESTIONS FOR THE GIVEN CATEGORY ONLY BASED ON THE PROJECTS AND EXPERIENCES FROM THE RESUME.
 Answer MUST be in JSON format with the following structure:
 {{
     "questions": [
         {{
-            "question": "What is the difference between supervised and unsupervised learning?",
-            "category": "ML",
-            "skills": ["ML", "supervised learning", "unsupervised learning"]
-        }},
+            "question": "What is REST API and how is it different from SOAP API?",
+            "category": "Web Development",
+            "skills": ["API", "REST API", "SOAP API"]
+        }}
     ]
 }}
-"""
-
-    # completion = openai.ChatCompletion.create(
-    #     model="gpt-3.5-turbo",
-    #     messages=[
-    #         {"role": "system", "content": "You are a principal data scientist/software engineer who is technically proficient. Also provide the category of the question and the skills it is testing for"},
-    #         {"role": "user", "content": content.format(resume=resume)}
-    #     ]
-    # )
+    """
+    content_message = "You are an interviewer conducting an interview. Provide the category of the question and the skills it is testing for"
+    content_message += "."+additional_info
+    # print('resume:', content.format(resume=resume, category=category))
 
     completion = openai.ChatCompletion.create(
         model="gpt-4",
         messages=[
-            {"role": "system", "content": "You are a principal data scientist/software engineer who is technically proficient. Also provide the category of the question and the skills it is testing for"},
-            {"role": "user", "content": content.format(resume=resume)}
+            {"role": "system", "content": content_message},
+            {"role": "user", "content": content.format(
+                resume=resume, category=category)}
         ]
     )
-
-    questions = completion['choices'][0]['message']['content']
+    try:
+        questions = completion['choices'][0]['message']['content']
+    except Exception as e:
+        questions = "Error in generating questions. Please try again."
+        # redirect to home page
+        return flask.render_template('index.html', error=True)
     # with open('questions.json', 'w') as f:
     #     f.write(questions)
     try:
         answer = json.loads(questions)
     except Exception as e:
         answer = {"questions": []}
+        return flask.render_template('index.html', error=True)
     end_gpt = time.time()
     durations['ChatGPT API Request'] = round(end_gpt - start_gpt, 3)
     return flask.render_template('questions.html', questions=dict(answer)['questions'], durations=durations)
