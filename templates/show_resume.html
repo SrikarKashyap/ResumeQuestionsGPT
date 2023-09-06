@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJRNFS97JR"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-WJRNFS97JR');
+        </script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Resume Preview</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src=
+        "//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js">
+        </script>
+        <script src=
+        "//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js">
+        </script>
+
+    </head>
+    <body>
+        <div class="jumbotron text-center" id="content">
+        <h1>Preview your resume before submission</h1>
+        <!-- div container -->
+        
+    <!-- show resume variable in a large text box -->
+    <form action="preview-submit">
+        <div class="form-group">
+            <label for="resume"><h3>Resume</h3></label>
+            <textarea class="form-control" rows="20" id="resume" name="resume">{{resume}}</textarea>
+        </div>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    </div>
+    </body>
+</html>

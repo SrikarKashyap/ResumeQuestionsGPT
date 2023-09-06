@@ -32,8 +32,8 @@
             }
 
             div#loading {
-                width: 35px;
-                height: 35px;
+                width: 100px;
+                height: 100px;
                 display: none;
                 background: url(/static/loader.gif) no-repeat;
                 cursor: wait;
@@ -41,12 +41,17 @@
                 left: 50%;
                 top: 50%;
                 }
-
+            body {
+                background-color: #f2f2f2;
+                text-align: center;
+                padding-top: 1%;
+            }
         </style>
         <script type="text/javascript">// <![CDATA[
             function loading(){
                 $("#loading").show();
-                $("#content").hide();       
+                $("#loading-text").show();
+                $("#container").hide();       
             }
     // ]]>
     </script>
@@ -56,8 +61,15 @@
         <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
-        <div id="loading"></div>
-        <div class="jumbotron text-center" id="content">
+        <div id="loading-text" hidden>
+            <h3>Don't leave yet! We're generating your questions...</h3>
+            <h3>Estimated time: 30 seconds to 1 minute</h3>
+        </div>            
+        <div id="loading">
+        </div>
+        <div id="container">
+        
+        
         {% if error %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Error!</strong> Try again or wait for some time...
@@ -66,10 +78,20 @@
             </button>
           </div>
         {% endif %}
-        <h1>Resume => Interview Questions using ChatGPT</h1>
-        <p>Upload your resume below and click the button to generate probable technical interview questions based on your resume!</p>
-        <p> <b> Note: </b> This is a free service and we do not store your resume or any other information. </p>
-        <p> Prompt Assumptions: None. You can add your context in the additional instructions text-box below. </p>
+        
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10" id="content">
+        <h1>ResumeQuestionsGPT: Generate Interview Questions using ChatGPT</h1>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <br>
+        <div class="col-md-12" id="content">
+        <h3>Upload your resume below and click the button to generate probable interview questions based on your resume!</h3>
+        <h4>by Srikar Kashyap Pulipaka (<a href="mailto:spulipa@iu.edu">spulipa@iu.edu</a> | <a href="https://linkedin.com/in/srikarkashyap">LinkedIn</a> | <a href="/static/srikarkashyapresume.pdf">Resume</a>)</h4>
+        <br><br><br>
+        <h4> You can add your context in the additional instructions text-box below. </h4>
         <form action="questions" method="post" enctype="multipart/form-data">
             <input type ="file" name="resume" id="resume" accept=".pdf"> <br>
             <br>
@@ -85,13 +107,21 @@
             <label for="normal">Normal</label>
             <input type="radio" id="anonymization" name="anonymization" value="strict">
             <label for="strict">Strict</label></div>
+            <small><b>Normal</b>: Remove Email IDs, Phone Numbers, SSN, etc. <b>Strict</b>: use NLP to try and remove names, places, etc.</small>
+            <!--<br>-->
+            <!-- checkbox for show preview -->
+            <!--- <input type="checkbox" id="double-check" name="double-check" value="True">
+            <label for="double-check">Show Parsed/Anonymized Resume before submitting </label><br> -->
             <br><br>
-            Additional Instructions: <input type ="text" name="additional-text" id="additional-text" placeholder="Additional Text (Optional)"> <br> <br>
+            Additional Instructions: <input type ="text" name="additional-text" id="additional-text" placeholder="Focus on work experience, focus on projects, etc."> <br> <br>
             <br> <br>
            <!-- boostrap submit button -->
             <input type="submit" class="btn btn-primary" value="Generate Questions" onclick="loading();">
         </form>
+        <br><br>
+        <p> <b> Note: </b> Neither the OpenAI API nor this website store your resume. </p>
 
+    </div>
         </div>
     </body>
 </html>

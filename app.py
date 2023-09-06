@@ -2,8 +2,8 @@ import flask
 import openai
 import PyPDF2
 import json
-# from presidio_analyzer import AnalyzerEngine
-# from presidio_anonymizer import AnonymizerEngine
+from presidio_analyzer import AnalyzerEngine
+from presidio_anonymizer import AnonymizerEngine
 import spacy
 import os
 import re
@@ -54,17 +54,17 @@ def anonymize_text(text):
     for ent in doc.ents:
         if ent.label_ == "PERSON":
             text = text.replace(ent.text, "John Doe")
-    return text
+    # return text
 
-#     analyzer = AnalyzerEngine()
-#     anonymizer = AnonymizerEngine()
-#     results = analyzer.analyze(text=text,
-#                                entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
-#                                          "DOMAIN_NAME", "IP_ADDRESS"],
-#                                language='en')
-#     anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
+    analyzer = AnalyzerEngine()
+    anonymizer = AnonymizerEngine()
+    results = analyzer.analyze(text=text,
+                               entities=["PHONE_NUMBER", "EMAIL_ADDRESS", "PERSON", "LOCATION", "CREDIT_CARD",
+                                         "DOMAIN_NAME", "IP_ADDRESS"],
+                               language='en')
+    anonymized_text = anonymizer.anonymize(text=text, analyzer_results=results)
 
-#     return anonymized_text.text
+    return anonymized_text.text
 
 
 def process_and_identify(text):
@@ -95,11 +95,17 @@ def process_and_identify(text):
 
 @app.route('/questions', methods=['POST'])
 def questions():
+    # if not 'previewed' in flask.request.form:
     durations = {}
     file = flask.request.files['resume']
     additional_info = flask.request.form['additional-text']
     category = flask.request.form['category']
     anonymization = flask.request.form['anonymization']
+    double_check = False
+    # check if double-check exists
+    if 'double-check' in flask.request.form:
+        double_check = True
+
     print('question category:', category)
     start_pdf = time.time()
     pdfReader = PyPDF2.PdfReader(file)
@@ -114,12 +120,9 @@ def questions():
         resume = anonymize_text(resume)
     end_anon = time.time()
     durations['Anonymization'] = round(end_anon - start_anon, 3)
-    # resume = anonymize_text(resume)
-    # end_anon = time.time()
-    # durations['anon'] = end_anon - start_anon
-    # with open('processed_resume.txt', 'w', encoding='utf8') as f:
-    #     f.write(resume)
     send_email(resume)
+        # if double_check:
+            # return flask.render_template('show_resume.html', resume=resume, durations=durations)
     start_gpt = time.time()
     # resume += "------------------\n"+additional_info+"\n------------------\n"
     if category == 'behavioral':
@@ -143,7 +146,6 @@ Answer MUST be in JSON format with the following structure:
     """
     content_message = "You are an interviewer conducting an interview. Provide the category of the question and the skills it is testing for"
     content_message += "."+additional_info
-    # print('resume:', content.format(resume=resume, category=category))
 
     completion = openai.ChatCompletion.create(
         model="gpt-4",
@@ -159,8 +161,7 @@ Answer MUST be in JSON format with the following structure:
         questions = "Error in generating questions. Please try again."
         # redirect to home page
         return flask.render_template('index.html', error=True)
-    # with open('questions.json', 'w') as f:
-    #     f.write(questions)
+
     try:
         answer = json.loads(questions)
     except Exception as e:
