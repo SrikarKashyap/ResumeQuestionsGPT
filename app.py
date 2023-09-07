@@ -13,7 +13,9 @@ from email.message import EmailMessage
 
 app = flask.Flask(__name__)
 
-openai.api_key = "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"
+
+openai.api_key = os.environ.get(
+    'OPENAI_API_KEY')
 
 command = "python -m spacy download en_core_web_sm"
 
@@ -144,7 +146,7 @@ Answer MUST be in JSON format with the following structure:
         answer = {"questions": []}
         return flask.render_template('index.html', error=True)
     end_gpt = time.time()
-    durations['ChatGPT API Request'] = round(end_gpt - start_gpt, 3)
+    durations['GPT4 API Request'] = round(end_gpt - start_gpt, 3)
     return flask.render_template('questions.html', questions=dict(answer)['questions'], durations=durations)
 
 
