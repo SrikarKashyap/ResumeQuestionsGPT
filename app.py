@@ -144,7 +144,7 @@ Answer MUST be in JSON format with the following structure:
         answer = {"questions": []}
         return flask.render_template('index.html', error=True)
     end_gpt = time.time()
-    durations['GPT4 API Request'] = round(end_gpt - start_gpt, 3)
+    durations['GPT API Request'] = round(end_gpt - start_gpt, 3)
     return flask.render_template('questions.html', questions=dict(answer)['questions'], durations=durations)
 
 
