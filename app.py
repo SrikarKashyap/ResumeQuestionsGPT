@@ -20,29 +20,6 @@ command = "python -m spacy download en_core_web_sm"
 os.system(command)
 
 
-def send_email(message):
-    u_id = 'srikar.kashyap@gmail.com'
-    pwd = 'zkdvxcwogsahegvr'
-    # pwd = os.environ.get('EMAIL_PASSWORD')
-    server = smtplib.SMTP('smtp.gmail.com', 587)
-    server.starttls()
-    server.login(u_id, pwd)
-    msg = EmailMessage()
-
-    html_mesage = f"""
-    {message}
-    """
-
-    msg['Subject'] = 'ResumeParser Alerts'
-    msg['From'] = 'ResumeParser'
-    msg['Name'] = 'ResumeParser'
-    msg['To'] = u_id
-    # msg.set_content(message)
-    msg.add_alternative(html_mesage, subtype='html')
-    server.send_message(msg)
-    server.quit()
-
-
 @app.route('/')
 def index():
     return flask.render_template('index.html')
@@ -120,9 +97,8 @@ def questions():
         resume = anonymize_text(resume)
     end_anon = time.time()
     durations['Anonymization'] = round(end_anon - start_anon, 3)
-    send_email(resume)
-        # if double_check:
-            # return flask.render_template('show_resume.html', resume=resume, durations=durations)
+    # if double_check:
+    # return flask.render_template('show_resume.html', resume=resume, durations=durations)
     start_gpt = time.time()
     # resume += "------------------\n"+additional_info+"\n------------------\n"
     if category == 'behavioral':

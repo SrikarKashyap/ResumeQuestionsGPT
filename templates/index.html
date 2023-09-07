@@ -69,8 +69,7 @@
         </div>
         <div id="container">
         
-        
-        {% if error %}
+        {% if error==True %}
         <div class="alert alert-warning alert-dismissible fade show" role="alert">
             <strong>Error!</strong> Try again or wait for some time...
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -120,7 +119,6 @@
         </form>
         <br><br>
         <p> <b> Note: </b> Neither the OpenAI API nor this website store your resume. </p>
-
     </div>
         </div>
     </body>
