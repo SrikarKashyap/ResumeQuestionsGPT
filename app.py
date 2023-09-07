@@ -108,7 +108,7 @@ def questions():
 Given the above resume, generate 10 {category} questions that can be asked to this candidate in an interview setting.
 Some of them have to be general and some specific.
 Provide the category of the question and the skills it is testing for.
-YOU MUST PROVIDE QUESTIONS FOR THE GIVEN CATEGORY ONLY BASED ON THE PROJECTS AND EXPERIENCES FROM THE RESUME.
+YOU MUST PROVIDE QUESTIONS FOR THE GIVEN CATEGORY ONLY BASED ON THE PROJECTS AND EXPERIENCES FROM THE RESUME. EACH QUESTION MUST BE LINKED TO SOME OF THE EXPERIENCE OR PROJECTS IN THE RESUME ONLY.
 Answer MUST be in JSON format with the following structure:
 {{
     "questions": [
