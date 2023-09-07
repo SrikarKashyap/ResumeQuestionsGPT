@@ -70,6 +70,11 @@ def process_and_identify(text):
     return text
 
 
+@app.route('/questions', methods=['GET'])
+def questions_form():
+    return flask.render_template('index.html')
+
+
 @app.route('/questions', methods=['POST'])
 def questions():
     # if not 'previewed' in flask.request.form:
