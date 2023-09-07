@@ -8,8 +8,6 @@ import spacy
 import os
 import re
 import time
-import smtplib
-from email.message import EmailMessage
 
 app = flask.Flask(__name__)
 
@@ -126,7 +124,7 @@ Answer MUST be in JSON format with the following structure:
     content_message += "."+additional_info
 
     completion = openai.ChatCompletion.create(
-        model="gpt-4",
+        model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": content_message},
             {"role": "user", "content": content.format(
