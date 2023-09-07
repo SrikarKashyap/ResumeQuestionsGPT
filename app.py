@@ -31,7 +31,7 @@ def anonymize_text(text):
     for ent in doc.ents:
         if ent.label_ == "PERSON":
             text = text.replace(ent.text, "John Doe")
-    # return text
+    return text
 
     analyzer = AnalyzerEngine()
     anonymizer = AnonymizerEngine()
