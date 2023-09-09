@@ -89,9 +89,12 @@
         <div class="col-md-12" id="content">
         <h3>Upload your resume below and click the button to generate probable interview questions based on your resume!</h3>
         <h4>by Srikar Kashyap Pulipaka (<a href="mailto:spulipa@iu.edu">spulipa@iu.edu</a> | <a href="https://linkedin.com/in/srikarkashyap">LinkedIn</a> | <a href="/static/srikarkashyapresume.pdf">Resume</a>)</h4>
-        <br><br><br>
-        <h4> You can add your context in the additional instructions text-box below. </h4>
+
+        <p><a href="/about">about</a></p>
+        <br><br>   
+        
         <form action="questions" method="post" enctype="multipart/form-data">
+            <h4>Upload your resume below (PDF only, max pages: 1)</h4>
             <input type ="file" name="resume" id="resume" accept=".pdf"> <br>
             <br>
             Questions Category: 
@@ -112,13 +115,14 @@
             <!--- <input type="checkbox" id="double-check" name="double-check" value="True">
             <label for="double-check">Show Parsed/Anonymized Resume before submitting </label><br> -->
             <br><br>
+            <h4> You can add your context in the additional instructions text-box below. </h4>
             Additional Instructions: <input type ="text" name="additional-text" id="additional-text" placeholder="Focus on work experience, focus on projects, etc."> <br> <br>
             <br> <br>
            <!-- boostrap submit button -->
             <input type="submit" class="btn btn-primary" value="Generate Questions" onclick="loading();">
         </form>
         <br><br>
-        <p> <b> Note: </b> Neither the OpenAI API nor this website store your resume/details. The source code of this website is public at <a href="https://github.com/SrikarKashyap/ResumeQuestionsGPT">GitHub</a> </p>
+        <p> <b> Note: </b> Neither the OpenAI API nor this website store your resume/details. <b>The source code of this website is public at <a href="https://github.com/SrikarKashyap/ResumeQuestionsGPT">GitHub.</a> </b></p>
     </div>
         </div>
     </body>

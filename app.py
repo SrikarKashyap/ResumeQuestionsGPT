@@ -2,8 +2,8 @@ import flask
 import openai
 import PyPDF2
 import json
-from presidio_analyzer import AnalyzerEngine
-from presidio_anonymizer import AnonymizerEngine
+# from presidio_analyzer import AnalyzerEngine
+# from presidio_anonymizer import AnonymizerEngine
 import spacy
 import os
 import re
@@ -26,6 +26,9 @@ def index():
 
 
 def anonymize_text(text):
+    """
+    Named Entity Recognition (NER) to remove names from text using spaCy
+    """
     model = spacy.load("en_core_web_sm")
     doc = model(text)
     for ent in doc.ents:
@@ -45,6 +48,9 @@ def anonymize_text(text):
 
 
 def process_and_identify(text):
+    """
+    Identify and replace emails, phones, urls, ssn, pan and aadhar numbers.
+    """
     # regular expressions
     email_re = r"[\w\.-]+@[\w\.-]+"
     phone_re = r"\+?\d[\d -]{5,15}\d"
@@ -70,8 +76,16 @@ def process_and_identify(text):
     return text
 
 
+@app.route('/about', methods=['GET'])
+def about():
+    return flask.render_template('about.html')
+
+
 @app.route('/questions', methods=['GET'])
 def questions_form():
+    """
+    Redirect to home page if user tries to access questions page directly
+    """
     return flask.render_template('index.html')
 
 
@@ -92,8 +106,11 @@ def questions():
     start_pdf = time.time()
     pdfReader = PyPDF2.PdfReader(file)
     resume = ""
-    for i in range(len(pdfReader.pages)):
+    # read only first page
+    for i in range(1):
         resume += pdfReader.pages[i].extract_text()
+    # for i in range(len(pdfReader.pages)):
+        # resume += pdfReader.pages[i].extract_text()
     end_pdf = time.time()
     durations['PDF Parsing'] = round(end_pdf - start_pdf, 3)
     start_anon = time.time()

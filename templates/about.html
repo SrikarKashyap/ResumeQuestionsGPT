@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<!-- load static -->
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-WJRNFS97JR"></script>
+        <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-WJRNFS97JR');
+        </script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>ResumeQuestionsGPT: Generate Interview Questions from your resume using GPT</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="">
+        <!-- import bootstrap -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <!-- import jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <style>
+            form, input  {
+                margin: 0 auto;
+
+            }
+
+            div#loading {
+                width: 100px;
+                height: 100px;
+                display: none;
+                background: url(/static/loader.gif) no-repeat;
+                cursor: wait;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                }
+            body {
+                background-color: #f2f2f2;
+                text-align: center;
+                padding-top: 1%;
+            }
+        </style>
+        <script type="text/javascript">// <![CDATA[
+            function loading(){
+                $("#loading").show();
+                $("#loading-text").show();
+                $("#container").hide();       
+            }
+    // ]]>
+    </script>
+            
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div id="loading-text" hidden>
+            <h3>Don't leave yet! We're generating your questions...</h3>
+            <h3>Estimated time: 30 seconds to 1 minute</h3>
+        </div>            
+        <div id="loading">
+        </div>
+        <div id="container">
+        
+        
+        <div class="col-md-1">
+        </div>
+        <div class="col-md-10" id="content">
+        <h1>ResumeQuestionsGPT: About</h1>
+        </div>
+        <div class="col-md-1">
+        </div>
+        <br>
+        <div class="col-md-12" id="content">
+            <h4>Using the power of GPT to help students/graduates better prepare for their interviews.</h4>
+        <div class="col-md-12" id="content">
+        <h3>Idea Sparring, Feedback & Early Testers</h3>
+        <p>Saradhi Somarouthu</p>
+        <p>Surya Sai Mourya Kosaraju</p>
+        <p>Srikanth Kashyap Pulipaka</p>
+        <p>You</p>
+        <h3>FAQ</h3>
+        <p>PRIVACY?: OpenAI API doesn't store/use any sent data as mentioned explicitly in their policy. Neither does this website which is deployed in public at the below given GitHub link. No, I don't want your resume. I'm traumatized by my own already!</p>
+        <p>Which version of GPT: 3.5 (because GPT4 was too slow)</p>
+        <p>How does anonymization work?: First use simple regex to remove emails, phone numbers, and URLs. Then use Spacy to remove names. Tried the Microsoft Presidio framework for further processing but didn't find it useful.</p>
+        <h3>TODO</h3>
+        <p>Use GPT4! (when the response time becomes tolerable; it's 50 seconds right now!)</p>
+        <p>More fine training and prompt engineering, especially for behavioral questions</p>
+        <p>Linking with job descriptions to get even more targeted questions</p>
+        <p><b>Have any more ideas? Raise a PR at the <a href="https://github.com/srikarkashyap/ResumeQuestionsGPT">GitHub link!!</a></b></p>
+        <br><br><br>
+        <a href='/'><button class="btn btn-primary">Go Home</button></a>
+    </div>
+        </div>
+    </body>
+</html>
